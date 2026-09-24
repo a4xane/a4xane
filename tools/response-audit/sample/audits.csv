@@ -1,0 +1,17 @@
+business,vertical,area,phone,contact_name,source,channel,enquiry_at,auto_reply,human_response_at,asked_qualifying,tried_to_book,followups,notes
+Demo Realty 01,real_estate,Area A,+91 00000 00001,,meta_ad_library,whatsapp,2026-09-08 11:05,yes,2026-09-08 11:09,yes,yes,2,Sent brochure + site visit slots
+Demo Realty 02,real_estate,Area A,+91 00000 00002,,meta_ad_library,website_form,2026-09-08 12:30,no,2026-09-09 10:15,no,yes,0,
+Demo Realty 03,real_estate,Area B,+91 00000 00003,Priya Sample,google_maps,whatsapp,2026-09-09 10:40,yes,,,,,Only the auto-greeting; nothing after
+Demo Realty 04,real_estate,Area B,+91 00000 00004,,99acres,call,2026-09-09 15:20,no,2026-09-09 17:05,yes,no,1,No answer; callback later
+Demo Realty 05,real_estate,Area C,+91 00000 00005,,meta_ad_library,whatsapp,2026-09-10 11:00,no,2026-09-10 11:38,yes,yes,3,
+Demo Realty 06,real_estate,Area C,+91 00000 00006,,google_maps,website_form,2026-09-10 16:10,no,,,,,
+Demo Realty 07,real_estate,Area A,+91 00000 00007,,meta_ad_library,whatsapp,2026-09-21 12:00,yes,,,,,Still inside the window
+Demo Dental 01,clinic,Area A,+91 00000 00011,,google_maps,whatsapp,2026-09-11 10:20,yes,2026-09-11 10:22,yes,yes,1,
+Demo Skin Clinic 02,clinic,Area B,+91 00000 00012,,meta_ad_library,whatsapp,2026-09-11 13:00,yes,2026-09-12 09:40,no,yes,0,
+Demo Physio 03,clinic,Area B,+91 00000 00013,,justdial,call,2026-09-12 11:15,no,2026-09-12 11:15,yes,yes,,Answered on first ring
+Demo Dental 04,clinic,Area C,+91 00000 00014,,google_maps,website_form,2026-09-12 17:30,no,,,,,
+Demo Clinic 05,clinic,Area C,+91 00000 00015,,meta_ad_library,instagram_dm,2026-09-14 19:45,no,2026-09-15 11:02,no,no,0,Sent after hours
+Demo Dental 06,clinic,Area A,+91 00000 00016,,google_maps,whatsapp,2026-09-15 10:10,no,2026-09-15 12:40,yes,yes,2,
+Demo Classes 01,coaching,Area A,+91 00000 00021,,meta_ad_library,whatsapp,2026-09-15 14:00,yes,2026-09-15 14:25,yes,yes,1,
+Demo Academy 02,coaching,Area B,+91 00000 00022,,google_maps,call,2026-09-16 12:00,no,,,,,Rang out twice
+Demo Tutorials 03,coaching,Area C,+91 00000 00023,,justdial,website_form,2026-09-16 15:30,no,2026-09-18 10:00,no,no,0,

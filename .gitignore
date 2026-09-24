@@ -1,0 +1,8 @@
+# This repository is PUBLIC. Keep real business, lead and client data out of it.
+tools/response-audit/out/
+tools/response-audit/data/
+tools/response-audit/config.json
+__pycache__/
+*.pyc
+.env
+.env.*

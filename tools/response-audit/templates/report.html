@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Lead Response Audit: $business</title>
+<style>
+:root{--ink:#111827;--muted:#4b5563;--line:#e5e7eb;--soft:#f8fafc;--ok:#15803d;--warn:#b45309;--bad:#b91c1c;--brand:#1e3a8a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.5;font-size:15px}
+.page{max-width:780px;margin:0 auto;padding:40px 24px}
+header{display:flex;justify-content:space-between;align-items:baseline;gap:16px;border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:24px;flex-wrap:wrap}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--brand)}
+h1{font-size:26px;line-height:1.2;letter-spacing:-.01em}
+h2{font-size:17px;margin:28px 0 10px}
+.muted{color:var(--muted)}
+.meta{font-size:13px;color:var(--muted);text-align:right}
+.result{display:flex;gap:24px;align-items:center;border:1px solid var(--line);border-left:6px solid var(--tone);border-radius:10px;padding:18px 20px;margin:18px 0}
+.result b{font-size:34px;line-height:1;color:var(--tone);white-space:nowrap}
+.tone-ok{--tone:var(--ok)}.tone-warn{--tone:var(--warn)}.tone-bad{--tone:var(--bad)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;width:48%;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0}
+.stats div{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px}
+.stats b{display:block;font-size:22px}
+.stats span{font-size:13px;color:var(--muted)}
+.calc td{height:34px}
+.calc td:last-child{width:40%;border-bottom:1px dashed #9ca3af}
+.cta{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-top:24px}
+footer{margin-top:24px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+@media(max-width:560px){.stats{grid-template-columns:1fr}.result{flex-direction:column;align-items:flex-start;gap:8px}.meta{text-align:left}}
+@media print{.page{padding:0}@page{size:A4;margin:16mm}}
+</style>
+</head>
+<body>
+<div class="page">
+<header>
+  <div><p class="kicker">Lead Response Audit</p><h1>$business</h1></div>
+  <p class="meta">Prepared by $agency<br>$today</p>
+</header>
+
+<p>$what_we_did</p>
+
+<div class="result tone-$tone"><b>$headline</b><span>$headline_label</span></div>
+
+<table>$rows</table>
+
+$benchmark
+
+<h2>Why this matters</h2>
+<p>A Harvard Business Review study of 2,241 US companies found that firms that tried to contact a web lead within an hour were nearly 7× as likely to qualify it as firms that waited even an hour longer, and more than 60× as likely as firms that waited 24 hours or more.</p>
+<p class="muted">Source: Oldroyd, McElheran &amp; Elkington, “The Short Life of Online Sales Leads”, HBR, March 2011. That study was done in the US in 2011, so treat it as a direction, not a forecast for your business.</p>
+
+<h2>What slow replies could be costing you</h2>
+<p class="muted">We would rather fill this in with your real numbers than guess them.</p>
+<table class="calc">
+  <tr><th>New enquiries per month</th><td></td></tr>
+  <tr><th>Share not answered by a person within 5 minutes</th><td></td></tr>
+  <tr><th>Share of those you would convert if answered fast</th><td></td></tr>
+  <tr><th>Value of one converted customer</th><td></td></tr>
+  <tr><th>Monthly revenue at risk (multiply the four)</th><td></td></tr>
+</table>
+
+<div class="cta">
+  <strong>Next step:</strong> a 15-minute call to go through this with your numbers. If your team already answers every enquiry within minutes, we will tell you so.<br>
+  <span class="muted">$contact</span>
+</div>
+
+<footer>
+  Method: one enquiry, sent during business hours where possible, in the way a customer would send it. It is one data point, not a verdict on your team; results can vary by day, time and staff member. Business names are never published. Any comparison uses only anonymised totals.
+</footer>
+</div>
+</body>
+</html>
