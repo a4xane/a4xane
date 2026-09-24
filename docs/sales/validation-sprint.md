@@ -36,7 +36,8 @@ Log these numbers every day: enquiries sent · replies recorded · outreach sent
 - **Meta Ad Library** (facebook.com/ads/library): country India, "All ads", status Active. Search the vertical plus the town (e.g. `2BHK Vapi`, `flats Valsad`, `dental clinic Surat`, `NEET coaching Vapi`). Anyone with an active lead ad is paying for leads. Note that a broker's ads appear under the broker's page, not the developer's.
 - **Property portals** (99acres, MagicBricks, Housing): agents with active listings in your area.
 - **Google Maps / JustDial:** clinics and coaching institutes with many reviews, which suggests volume.
-- **Skip:** businesses with no visible lead spend or volume.
+- **Start from the seed list** of 40 businesses (delivered privately; put it in `tools/response-audit/data/audits.csv`). Check each one in the Ad Library for active ads, drop the rows marked `SKIP`, and add more until you have 60.
+- **Skip:** businesses with no visible lead spend or volume, and national chains (Aakash, PW and similar). Their leads are handled centrally, so the local branch can't buy.
 
 ## Step 2: Audit protocol (ethics are part of the method)
 

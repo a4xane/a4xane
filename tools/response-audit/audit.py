@@ -190,14 +190,19 @@ def normalize_row(raw: dict) -> dict:
     return {field: next((keys[a] for a in aliases if keys.get(a)), "") for field, aliases in FIELD_ALIASES.items()}
 
 
-def load_audits(path: Path) -> tuple[list[Audit], list[str]]:
+def load_audits(path: Path) -> tuple[list[Audit], list[str], int]:
+    """Returns (audits, errors, not_sent). Rows with no channel and no enquiry time are prospects not yet contacted."""
     audits: list[Audit] = []
     errors: list[str] = []
     seen: set[str] = set()
+    not_sent = 0
     with path.open(newline="", encoding="utf-8-sig") as fh:
         for row_no, raw in enumerate(csv.DictReader(fh), start=2):
             rec = normalize_row(raw)
             if not any(rec.values()):
+                continue
+            if rec["business"] and not rec["channel"] and not rec["enquiry_at"]:
+                not_sent += 1
                 continue
             missing = [f for f in REQUIRED if not rec[f]]
             if missing:
@@ -235,7 +240,7 @@ def load_audits(path: Path) -> tuple[list[Audit], list[str]]:
                 continue
             seen.add(audit.slug)
             audits.append(audit)
-    return audits, errors
+    return audits, errors, not_sent
 
 
 def norm_vertical(value: str) -> str:
@@ -578,7 +583,8 @@ def render_outreach(audit: Audit, bench: dict | None, cfg: dict) -> str:
     ])
 
 
-def render_summary(audits: list[Audit], groups: dict[str, list[Audit]], cfg: dict, errors: list[str], as_of: datetime) -> str:
+def render_summary(audits: list[Audit], groups: dict[str, list[Audit]], cfg: dict, errors: list[str], as_of: datetime,
+                   not_sent: int = 0) -> str:
     window = cfg["window_days"]
     labels = bucket_labels(window)
     lines = [
@@ -590,6 +596,8 @@ def render_summary(audits: list[Audit], groups: dict[str, list[Audit]], cfg: dic
         "These are your own measurements. Report them as measured; do not round them up into claims.",
         "",
     ]
+    if not_sent:
+        lines += [f"{not_sent} businesses on the list have not been sent an enquiry yet.", ""]
     header = ("| Vertical | Complete | Window open | Median reply (repliers only) | "
               + " | ".join(labels)
               + " | Auto-greeting | Asked qualifying* | Offered booking* | Followed up* |")
@@ -729,7 +737,7 @@ def load_config(path: Path | None) -> dict:
 
 
 def run(csv_path: Path, out_dir: Path, cfg: dict, as_of: datetime, pdf: bool = False, browser: str | None = None) -> dict:
-    audits, errors = load_audits(csv_path)
+    audits, errors, not_sent = load_audits(csv_path)
     for audit in audits:
         classify(audit, as_of, cfg["window_days"])
     groups: dict[str, list[Audit]] = {}
@@ -754,9 +762,10 @@ def run(csv_path: Path, out_dir: Path, cfg: dict, as_of: datetime, pdf: bool = F
         (out_dir / "outreach" / f"{audit.slug}.md").write_text(render_outreach(audit, bench, cfg), encoding="utf-8")
         written += 1
 
-    (out_dir / "summary.md").write_text(render_summary(audits, groups, cfg, errors, as_of), encoding="utf-8")
+    (out_dir / "summary.md").write_text(render_summary(audits, groups, cfg, errors, as_of, not_sent), encoding="utf-8")
     write_pipeline(out_dir / "pipeline.csv", audits, cfg)
-    return {"audits": len(audits), "reports": written, "pending": sum(a.status == "pending" for a in audits), "errors": errors}
+    return {"audits": len(audits), "reports": written, "pending": sum(a.status == "pending" for a in audits),
+            "not_sent": not_sent, "errors": errors}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -788,7 +797,7 @@ def main(argv: list[str] | None = None) -> int:
     for err in result["errors"]:
         print(f"skipped {err}", file=sys.stderr)
     print(f"{result['audits']} audits read, {result['reports']} reports written, "
-          f"{result['pending']} still inside the audit window. Output: {args.out}")
+          f"{result['pending']} still inside the audit window, {result['not_sent']} not contacted yet. Output: {args.out}")
     return 0
 
 

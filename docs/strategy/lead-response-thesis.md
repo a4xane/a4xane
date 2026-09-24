@@ -32,12 +32,19 @@ Only the existence of these businesses is close to certain. Everything else in t
 
 | | Primary | Secondary |
 |---|---|---|
-| Who | Real-estate developers and channel partners with active lead ads or portal subscriptions | Private clinics (dental, dermatology, physio, IVF) and coaching institutes |
+| Who | Real-estate developers and channel partners with active lead ads or portal subscriptions | High-ticket private clinics: IVF, hair transplant, dental implants, skin/cosmetic. (Coaching is deprioritised; see below.) |
 | Why them | One extra deal is worth a lot. Lead volume is high and lead quality poor, so qualification has value. The owner decides. | They take appointments, run frequent ads, and the owner decides |
 | Decision maker / budget | Owner or partner | Owner or doctor |
 | Disqualify if | Fewer than about 50 leads a month (assumption), nobody to hand leads to, or unwilling to share lead data | Same |
 
 Don't assume the winner. The audit covers all three verticals, and the data picks one.
+
+**Update 2026-09-24 (desk research, not yet validated):**
+- **National coaching chains** (Aakash, PW, Motion) aren't buyers: their leads are handled centrally.
+- **Local tuition** reportedly costs about ₹300–500 per month per student ([UrbanPro via search](https://www.urbanpro.com/vapi/class-11-tuition)), far too little to justify ₹7,999/month. Keep coaching in the audit only for independent NEET/JEE institutes.
+- **Hair-transplant and IVF clinics** look stronger: a hair transplant is quoted at ₹30,000–3,00,000 ([WhatClinic via search](https://www.whatclinic.com/hair-loss/india/vapi)), and these clinics publish SEO pages targeting each nearby town, a sign that they chase leads.
+
+A seed list of 40 real local businesses was compiled from web search. It was delivered privately and is **not in this repo**.
 
 ## 3. Problem
 

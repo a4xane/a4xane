@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Thrumline brand assets (export source)</title>
+<link href="../../site/assets/fonts/fonts.css" rel="stylesheet">
+<style>
+:root{--ink:#0E1116;--ink-2:#171B22;--paper:#F7F6F2;--lime:#C7F25A;--moss:#3F6212;--ember:#E4572E;--mist:#E7E5DF;--slate:#5B616B;--fog:#9BA1AA}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#777;font-family:"Instrument Sans",system-ui,sans-serif;padding:40px;display:flex;flex-direction:column;gap:40px;align-items:flex-start}
+.frame{position:relative;overflow:hidden;background:var(--ink);color:var(--paper)}
+.serif{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;letter-spacing:0;white-space:nowrap}
+.lime{color:var(--lime)}
+.wordmark{display:flex;align-items:center;gap:.42em;font-weight:600;letter-spacing:-.025em}
+.wordmark svg{height:1.7em;width:auto;flex:none}
+.pulse-bg{position:absolute;left:0;right:0;opacity:.9}
+.chip{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(199,242,90,.35);color:var(--lime);border-radius:999px;padding:10px 20px;font-weight:500}
+.chip i{width:10px;height:10px;border-radius:50%;background:var(--lime);display:inline-block}
+
+/* 800 x 800 profile photo (WhatsApp, LinkedIn page, Google Business Profile) */
+#profile{width:800px;height:800px;display:grid;place-items:center}
+#profile svg{width:560px;height:auto}
+
+/* 1200 x 630 Open Graph / link preview */
+#og{width:1200px;height:630px;padding:64px 72px;display:flex;flex-direction:column;justify-content:space-between}
+#og .wordmark{font-size:34px}
+#og h1{font-size:92px;line-height:.98;letter-spacing:-.035em;font-weight:600;max-width:15ch}
+#og p{font-size:30px;color:var(--fog);max-width:34ch;line-height:1.3}
+#og .row{display:flex;justify-content:space-between;align-items:flex-end;font-size:22px;color:var(--fog)}
+
+/* 1584 x 396 LinkedIn banner (left-bottom stays clear for the profile photo) */
+#linkedin{width:1584px;height:396px;padding:56px 72px 56px 520px;display:flex;flex-direction:column;justify-content:center;gap:18px}
+#linkedin h1{font-size:68px;line-height:1;letter-spacing:-.03em;font-weight:600}
+#linkedin p{font-size:24px;color:var(--fog);white-space:nowrap}
+
+/* 1080 x 1080 first post / WhatsApp status */
+#post1{width:1080px;height:1080px;padding:88px;display:flex;flex-direction:column;justify-content:space-between}
+#post1 h1{font-size:104px;line-height:.98;letter-spacing:-.035em;font-weight:600}
+#post1 p{font-size:36px;color:var(--fog);line-height:1.35;max-width:26ch}
+#post1 .wordmark{font-size:36px}
+.msg{background:var(--ink-2);border:1px solid #262C35;border-radius:22px;padding:22px 26px;font-size:30px;max-width:640px}
+.msg small{display:block;color:var(--fog);font-size:22px;margin-top:8px}
+
+/* Wordmark lockups */
+#logo-dark{width:1200px;height:360px;display:grid;place-items:center}
+#logo-light{width:1200px;height:360px;display:grid;place-items:center;background:var(--paper);color:var(--ink)}
+#logo-dark .wordmark,#logo-light .wordmark{font-size:104px}
+</style>
+</head>
+<body>
+
+<template id="mark-dark"><svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#0E1116"/><path d="M7 26h9.5l4-11 5 19 4-12 2 4H36" fill="none" stroke="#C7F25A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40.5" cy="26" r="3" fill="#C7F25A"/></svg></template>
+<template id="mark-bare"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M3 26h13.5l4-11 5 19 4-12 2 4H38" fill="none" stroke="#C7F25A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="43" cy="26" r="2.6" fill="#C7F25A"/></svg></template>
+
+<div class="frame" id="profile" data-mark="bare"></div>
+
+<div class="frame" id="og">
+  <div class="wordmark" data-mark="dark">thrumline</div>
+  <div>
+    <h1>Never leave a lead <span class="serif lime">on read.</span></h1>
+  </div>
+  <div class="row">
+    <p>Every enquiry answered on WhatsApp in under 60 seconds, day or night.</p>
+    <span>Vapi · Valsad · Silvassa · Daman</span>
+  </div>
+</div>
+
+<div class="frame" id="linkedin">
+  <span class="chip"><i></i> Taking 3 pilot clients in the Vapi–Valsad area</span>
+  <h1>Never leave a lead <span class="serif lime">on read.</span></h1>
+  <p>WhatsApp lead response for real estate &amp; clinics: reply in 60 s, qualify, book the visit.</p>
+</div>
+
+<div class="frame" id="post1">
+  <div class="wordmark" data-mark="dark">thrumline</div>
+  <div style="display:flex;flex-direction:column;gap:28px">
+    <div class="msg">Hi, is the 2BHK still available? What's the price?<small>Lead from your ad · 10:02 PM</small></div>
+    <div class="msg" style="border-color:rgba(228,87,46,.5)">…<small>No reply · 10:02 PM → 11:15 AM next day</small></div>
+  </div>
+  <div>
+    <h1>You paid for the lead. <span class="serif lime">Who's answering it?</span></h1>
+  </div>
+  <p>13 hours is a long time to wait. Your competitor's number is one tap away.</p>
+</div>
+
+<div class="frame" id="logo-dark"><div class="wordmark" data-mark="dark">thrumline</div></div>
+<div class="frame" id="logo-light"><div class="wordmark" data-mark="dark">thrumline</div></div>
+
+<script>
+  // Insert the mark SVGs from the templates so every asset uses the same drawing.
+  document.querySelectorAll('[data-mark]').forEach(el => {
+    const tpl = document.getElementById('mark-' + el.dataset.mark);
+    el.prepend(tpl.content.cloneNode(true));
+  });
+</script>
+</body>
+</html>

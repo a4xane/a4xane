@@ -8,9 +8,14 @@ Owner: **F** = founder, **C** = Claude (in a session). Update the status as you 
 |---|---|---|---|
 | 1 | Read `docs/strategy/lead-response-thesis.md`. Accept, change or reject D-002, D-003 and D-004 in `DECISIONS.md`. | F | open |
 | 2 | Decide where this business lives: a new **private** repo (recommended) or keep using this public one | F | open |
-| 3 | `cp tools/response-audit/config.example.json tools/response-audit/config.json` and fill in your name, number, email and city | F | open |
+| 3 | Create `tools/response-audit/config.json` on your machine (content in the PR description; it's gitignored and doesn't travel with the repo) | F | open |
 | 4 | Set up a UPI/Razorpay payment link for ₹9,999 so you can collect on the call | F | open |
 | 5 | Review the pilot agreement template (`docs/sales/pilot-agreement.md`); get a lawyer or CA to check it before client 3 | F | drafted |
+| 5a | Buy a domain in your name, deploy `site/`, fix the `og:image` URL, add an email (`site/README.md`) | F | open |
+| 5b | Set up the WhatsApp Business profile, greeting, away message, quick replies and labels (`docs/marketing/launch-plan.md`) | F | open |
+| 5c | Set up the Google Business Profile and LinkedIn headline, About and banner (`docs/marketing/content.md`) | F | open |
+| 5d | Search the Indian trademark register for "Thrumline" (ipindia.gov.in) | F | open |
+| 5e | Put the private seed list of 40 businesses in `tools/response-audit/data/audits.csv`; check each one in Meta Ad Library; drop `SKIP` rows; add businesses to reach 60 | F | open |
 
 ## Sprint: days 1–14 (`docs/sales/validation-sprint.md`)
 

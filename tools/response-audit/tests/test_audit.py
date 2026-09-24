@@ -68,7 +68,7 @@ class ParsingTests(unittest.TestCase):
                          + "Backwards,clinic,,,whatsapp,2026-09-08 11:00,,2026-09-08 10:00,,,,\n"
                          + "Maybe,clinic,,,whatsapp,2026-09-08 11:00,perhaps,,,,,\n"
                          + "Good,clinic,,,whatsapp,2026-09-09 11:00,,,,,,\n")
-        audits, errors = audit.load_audits(path)
+        audits, errors, _ = audit.load_audits(path)
         self.assertEqual([a.business for a in audits], ["Good"])
         self.assertEqual(len(errors), 4)
         self.assertIn("missing business", errors[0])
@@ -80,9 +80,19 @@ class ParsingTests(unittest.TestCase):
         path = write_csv(HEADER
                          + "Demo Realty,real_estate,Area A,+91 98765 43210,whatsapp,2026-09-08 11:00,,,,,,\n"
                          + "demo  realty,real_estate,area a,+919876543210,whatsapp,2026-09-09 11:00,,,,,,\n")
-        audits, errors = audit.load_audits(path)
+        audits, errors, _ = audit.load_audits(path)
         self.assertEqual(len(audits), 1)
         self.assertIn("duplicate", errors[0])
+
+    def test_uncontacted_prospects_are_counted_not_errors(self):
+        path = write_csv(HEADER
+                         + "Prospect Only,clinic,Area,,,,,,,,,\n"
+                         + "Sent,clinic,Area,,whatsapp,2026-09-08 11:00,,,,,,\n"
+                         + "Half Filled,clinic,Area,,whatsapp,,,,,,,\n")
+        audits, errors, not_sent = audit.load_audits(path)
+        self.assertEqual(([a.business for a in audits], not_sent), (["Sent"], 1))
+        self.assertEqual(len(errors), 1)
+        self.assertIn("missing enquiry_at", errors[0])
 
     def test_slug_is_ascii_and_stable(self):
         slug = audit.make_slug("Café Ünïcode & Co", "Area", "1")
@@ -229,7 +239,8 @@ class OutputTests(unittest.TestCase):
         cfg = dict(CFG, window_days=3)
         with tempfile.TemporaryDirectory() as out:
             result = audit.run(SAMPLE, Path(out), cfg, AS_OF)
-            self.assertEqual((result["audits"], result["reports"], result["pending"], result["errors"]), (16, 15, 1, []))
+            self.assertEqual((result["audits"], result["reports"], result["pending"], result["not_sent"], result["errors"]),
+                             (16, 15, 1, 0, []))
             rows = list(csv.DictReader(io.StringIO((Path(out) / "pipeline.csv").read_text(encoding="utf-8"))))
             self.assertEqual(rows[0]["priority"], "A")
             self.assertEqual(rows[-1]["status"], "audit pending")

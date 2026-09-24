@@ -8,6 +8,7 @@ Read this first in every session. Then read `DECISIONS.md` and `TODO.md`.
 - **Do not replace the root `README.md`.** It is the public GitHub profile page.
 - **Never commit** personal details, client or lead data, audit logs, credentials or `.env` files. Real data lives in gitignored folders (`tools/response-audit/data/`, `out/`, `config.json`).
 - The founder's full master context (background, history, past projects) is kept **outside** this repo on purpose. Ask the founder for it if a task needs it. Don't paste it here.
+- Exception (D-006): the founder's name (Kanish Shah) and business WhatsApp (+91 83470 55841) appear in `site/` because a business website needs a contact. Don't add other personal details.
 - Planned move: a private repo for the business (`TODO.md`). Until then, keep this repo to non-sensitive strategy, docs and tools.
 
 ## Current objective
@@ -39,6 +40,9 @@ docs/sales/                    validation-sprint.md (list, audit protocol, outre
 docs/operations/               pilot-spec.md (delivery architecture, guardrails, onboarding, report). SPEC ONLY
 docs/research/                 sources.md (every external claim, its source and how well it is verified)
 tools/response-audit/          audit log → benchmarks, one-page reports, outreach copy, pipeline.csv
+brand/                         BRAND.md (positioning, voice, colours, type), mark/logo SVG, png/ social assets, src/ export source
+site/                          the Thrumline website (static HTML, self-hosted fonts): index.html, privacy.html. NOT DEPLOYED yet
+docs/marketing/                launch-plan.md (zero-budget channels, 14-day calendar), content.md (ready-to-post copy)
 ```
 
 ## Commands

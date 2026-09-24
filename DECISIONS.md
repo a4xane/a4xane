@@ -43,3 +43,31 @@ The founder decides; Claude proposes. Status is PROPOSED until the founder accep
 - **EVIDENCE:** Pricing figures in `docs/research/sources.md` (BSP-reported, not yet verified against Meta's page).
 - **CONSEQUENCES:** Onboarding must include setting up the client's WhatsApp Business account and migrating their number.
 - **STATUS:** PROPOSED.
+
+### D-005: Sell under Thrumline; no new brand
+
+- **DATE:** 2026-09-24
+- **DECISION:** The offer is sold as "Thrumline", under the tagline "Never leave a lead on read." It has a visual identity (Ink, Paper and Lime; Instrument Sans and Instrument Serif; the pulse-line mark) and a zero-budget launch plan. Brand guide: `brand/BRAND.md`.
+- **WHY:** A second brand would split credibility the business hasn't earned yet. Checks on 2026-09-24 found no existing Thrumline brand kit (Canva), website (Higgsfield) or web presence.
+- **ALTERNATIVES:** A new product brand (rejected for now). Reusing another agency style (none existed).
+- **EVIDENCE:** A web search for "Thrumline" found no business conflict. **The Indian trademark register was not checked.**
+- **CONSEQUENCES:** Check the trademark before spending on print or other paid assets.
+- **STATUS:** PROPOSED.
+
+### D-006: The founder's name and WhatsApp number are public on the website
+
+- **DATE:** 2026-09-24
+- **DECISION:** `site/` shows "Kanish Shah" and +91 83470 55841 as the business contact, and the site source is committed to this public repo. This is a narrow exception to D-001: the founder supplied both for the website, and a business site needs a contact. Everything else in D-001 still holds. The local `config.json` and all prospect and audit data stay out of git.
+- **WHY:** Every call to action is "WhatsApp us". Founder-led trust is the main asset a new local business has.
+- **ALTERNATIVES:** A separate business number (recommended before pilot 2, and easy to swap in: search `site/` for `918347055841` and `83470 55841`).
+- **CONSEQUENCES:** The number is now public and may attract spam. The founder has to reply fast, because the site invites prospects to test response time.
+- **STATUS:** ACCEPTED (the founder provided the details for this purpose).
+
+### D-007: Narrow the ICP from desk research
+
+- **DATE:** 2026-09-24
+- **DECISION:** Keep real estate as the primary ICP. Make the secondary ICP high-ticket clinics (IVF, hair transplant, dental implants, skin/cosmetic). Test coaching only with independent NEET/JEE institutes, never national chains.
+- **WHY:** Chains handle leads centrally. Local tuition reportedly costs about ₹300–500 a month per student, too little to justify ₹7,999. Hair transplants are quoted at ₹30,000–3,00,000.
+- **EVIDENCE:** Web search results only (sources in `docs/strategy/lead-response-thesis.md` §2). **Not validated with any owner.**
+- **CONSEQUENCES:** The seed list of 40 businesses is weighted to real estate and clinics.
+- **STATUS:** PROPOSED. Revisit after the audit data comes in.
