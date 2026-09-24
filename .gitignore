@@ -1,0 +1,12 @@
+# This repository is PUBLIC. Keep real business, lead and client data out of it.
+# Patterns are unanchored on purpose so output written from any folder is still caught.
+out/
+pipeline*.csv
+audits*.csv
+!tools/response-audit/sample/audits.csv
+tools/response-audit/data/
+tools/response-audit/config.json
+__pycache__/
+*.pyc
+.env
+.env.*

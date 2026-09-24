@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thrumline | Never leave a lead on read</title>
+<meta name="description" content="Thrumline answers every new enquiry on WhatsApp in under 60 seconds, day or night, asks your qualifying questions and books the visit. For real estate and clinics in Vapi, Valsad, Silvassa and Daman.">
+<meta name="theme-color" content="#0E1116">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Thrumline | Never leave a lead on read">
+<meta property="og:description" content="Every enquiry answered on WhatsApp in under 60 seconds, day or night. 30-day pilot for real estate and clinics in the Vapi–Valsad area.">
+<meta property="og:image" content="assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"Thrumline","description":"WhatsApp lead response systems for local businesses: every enquiry answered in under 60 seconds, qualified and booked.","telephone":"+91 83470 55841","areaServed":["Vapi","Valsad","Silvassa","Daman"],"address":{"@type":"PostalAddress","addressLocality":"Vapi","addressRegion":"Gujarat","addressCountry":"IN"},"founder":{"@type":"Person","name":"Kanish Shah"}}
+</script>
+<style>
+:root{
+  --ink:#0E1116;--ink-2:#161A21;--ink-3:#232933;--paper:#F7F6F2;--card:#FFFFFF;
+  --lime:#C7F25A;--moss:#3F6212;--ember:#E4572E;--ember-text:#B8401C;
+  --mist:#E7E5DF;--slate:#5B616B;--fog:#9BA1AA;
+  --radius:18px;--wrap:1160px;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --serif:"Instrument Serif",Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--lime);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 20px}
+.serif{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:0}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+h1,h2,h3{letter-spacing:-.03em;line-height:1.02;font-weight:600}
+h2{font-size:clamp(34px,5vw,58px);margin-bottom:18px}
+h3{font-size:22px;letter-spacing:-.015em;line-height:1.2}
+.lede{font-size:clamp(18px,2vw,21px);max-width:58ch}
+section{padding:96px 0}
+.dark{background:var(--ink);color:var(--paper)}
+.dark .muted{color:var(--fog)}
+.muted{color:var(--slate)}
+.lime{color:var(--lime)}
+.moss{color:var(--moss)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;border-radius:999px;font-weight:600;font-size:16px;text-decoration:none;border:1.5px solid transparent;transition:transform .15s ease,background .15s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn-lime{background:var(--lime);color:var(--ink)}
+.btn-lime:hover{background:#d4f779}
+.btn-ghost{border-color:var(--ink-3);color:var(--paper)}
+.btn-ghost:hover{background:var(--ink-2)}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn svg{width:20px;height:20px}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:var(--ink);border-bottom:1px solid var(--ink-3)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--paper);font-weight:600;font-size:20px;letter-spacing:-.025em}
+.brand svg{width:34px;height:34px}
+.nav nav{display:flex;align-items:center;gap:28px}
+.nav nav a{color:var(--fog);text-decoration:none;font-size:15px;font-weight:500}
+.nav nav a:hover{color:var(--paper)}
+.nav .btn{min-height:42px;padding:0 18px;font-size:15px}
+.nav nav a.btn-lime{color:var(--ink)}
+@media(max-width:820px){.nav nav a:not(.btn){display:none}}
+
+/* hero */
+.hero{padding:72px 0 96px;position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(46px,7.4vw,92px);margin:18px 0 22px}
+.hero .lede{color:var(--fog)}
+.chip{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(199,242,90,.35);color:var(--lime);border-radius:999px;padding:8px 16px;font-size:14px;font-weight:500}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 0 rgba(199,242,90,.6);animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(199,242,90,.55)}80%,100%{box-shadow:0 0 0 10px rgba(199,242,90,0)}}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.hero-note{margin-top:18px;font-size:14px;color:var(--fog)}
+.pulse-line{position:absolute;left:0;right:0;bottom:0;height:120px;opacity:.14;pointer-events:none}
+@media(max-width:960px){.hero .wrap{grid-template-columns:1fr}.hero{padding:48px 0 72px}}
+
+/* phone mock */
+.phone{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:28px;padding:18px;max-width:440px;width:100%;justify-self:center;box-shadow:0 40px 80px -30px rgba(0,0,0,.6)}
+.phone-top{display:flex;align-items:center;justify-content:space-between;padding:4px 6px 14px;border-bottom:1px solid var(--ink-3);margin-bottom:14px;font-size:13px;color:var(--fog)}
+.phone-top b{color:var(--paper);font-weight:600;font-size:15px}
+.chat{display:flex;flex-direction:column;gap:10px;min-height:430px}
+.msg{max-width:86%;padding:10px 14px;border-radius:16px;font-size:14.5px;line-height:1.45;opacity:0;transform:translateY(8px);animation:in .45s ease forwards}
+.msg small{display:block;font-size:11.5px;margin-top:4px;opacity:.7}
+.msg.lead{background:var(--ink-3);color:var(--paper);align-self:flex-start;border-bottom-left-radius:6px}
+.msg.bot{background:#E9F8C6;color:var(--ink);align-self:flex-end;border-bottom-right-radius:6px}
+.msg.alert{align-self:stretch;max-width:none;background:transparent;border:1px dashed rgba(199,242,90,.55);color:var(--lime);font-size:13.5px}
+.msg:nth-child(1){animation-delay:.3s}.msg:nth-child(2){animation-delay:1.3s}.msg:nth-child(3){animation-delay:2.4s}
+.msg:nth-child(4){animation-delay:3.3s}.msg:nth-child(5){animation-delay:4.2s}.msg:nth-child(6){animation-delay:5.1s}.msg:nth-child(7){animation-delay:6s}
+@keyframes in{to{opacity:1;transform:none}}
+.timer{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--moss)}
+.mock-label{font-size:12.5px;color:var(--fog);text-align:center;margin-top:12px}
+
+/* leak */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+.card{background:var(--card);border:1px solid var(--mist);border-radius:var(--radius);padding:28px}
+.card .big{font-size:44px;font-weight:600;letter-spacing:-.03em;line-height:1;margin-bottom:14px}
+.card .big.ember{color:var(--ember-text)}
+.research{margin-top:18px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;background:var(--ink);color:var(--paper);border-radius:var(--radius);padding:32px}
+.research .num{font-size:clamp(56px,8vw,96px);font-weight:600;letter-spacing:-.04em;line-height:.9;color:var(--lime)}
+.research p{max-width:62ch}
+.research cite{display:block;font-style:normal;font-size:13.5px;color:var(--fog);margin-top:10px}
+@media(max-width:860px){.grid-3{grid-template-columns:1fr}.research{grid-template-columns:1fr}}
+
+/* how */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px;counter-reset:step}
+.step{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:var(--radius);padding:26px;position:relative}
+.step::before{counter-increment:step;content:"0" counter(step);display:block;font-size:14px;font-weight:600;color:var(--lime);margin-bottom:28px;letter-spacing:.08em}
+.step p{color:var(--fog);font-size:15.5px;margin-top:10px}
+.extras{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+.extra{border:1px solid var(--ink-3);border-radius:var(--radius);padding:22px 24px}
+.extra h3{font-size:18px}
+.extra p{color:var(--fog);font-size:15px;margin-top:6px}
+@media(max-width:960px){.steps{grid-template-columns:1fr 1fr}.extras{grid-template-columns:1fr}}
+@media(max-width:560px){.steps{grid-template-columns:1fr}}
+
+/* fit */
+.fit{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px}
+.fit ul{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.fit li{padding-left:30px;position:relative}
+.fit li::before{content:"";position:absolute;left:0;top:.5em;width:14px;height:14px;border-radius:50%;background:var(--moss)}
+.fit .no li::before{background:transparent;border:2px solid var(--slate)}
+@media(max-width:760px){.fit{grid-template-columns:1fr}}
+
+/* calculator */
+.calc{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px;align-items:stretch}
+.calc label{display:block;font-weight:600;margin-bottom:10px}
+.field{display:flex;align-items:center;border:1.5px solid var(--mist);background:var(--card);border-radius:14px;padding:0 16px;height:60px;font-size:22px;font-weight:600}
+.field:focus-within{border-color:var(--moss)}
+.field input{border:0;outline:0;background:transparent;font:inherit;width:100%;padding-left:6px;color:var(--ink)}
+.field input::placeholder{color:#A9ADB3;font-weight:500;font-size:18px}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.presets button{font:inherit;font-size:14px;border:1px solid var(--mist);background:var(--card);border-radius:999px;padding:7px 14px;cursor:pointer;color:var(--ink)}
+.presets button:hover{border-color:var(--moss)}
+.result{background:var(--ink);color:var(--paper);border-radius:var(--radius);padding:30px;display:flex;flex-direction:column;justify-content:center}
+.result .muted{color:var(--fog)}
+.result .out{font-size:clamp(40px,6vw,64px);font-weight:600;letter-spacing:-.035em;line-height:1;color:var(--lime);margin:8px 0 12px}
+@media(max-width:760px){.calc{grid-template-columns:1fr}}
+
+/* pricing */
+.price-card{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;background:var(--ink-2);border:1px solid var(--ink-3);border-radius:26px;padding:44px;margin-top:40px}
+.price{font-size:clamp(52px,7vw,76px);font-weight:600;letter-spacing:-.04em;line-height:1}
+.price small{font-size:18px;color:var(--fog);font-weight:500;letter-spacing:0}
+.then{margin-top:10px;color:var(--fog)}
+.then b{color:var(--paper)}
+.checks{list-style:none;display:flex;flex-direction:column;gap:12px}
+.checks li{padding-left:30px;position:relative;color:#D9DCE1}
+.checks li::before{content:"";position:absolute;left:0;top:.3em;width:18px;height:18px;border-radius:50%;background:var(--lime) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M8.2 13.6 4.9 10.3l-1.4 1.4 4.7 4.7 9-9-1.4-1.4z' fill='%230E1116'/%3E%3C/svg%3E") center/13px no-repeat}
+.guarantee{margin-top:26px;border-left:3px solid var(--lime);padding-left:16px;color:var(--paper)}
+@media(max-width:860px){.price-card{grid-template-columns:1fr;padding:30px}}
+
+/* founder */
+.founder{display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:center}
+.avatar{width:120px;height:120px;border-radius:30px;background:var(--ink);display:grid;place-items:center}
+.avatar svg{width:84px}
+@media(max-width:640px){.founder{grid-template-columns:1fr}}
+
+/* faq */
+.faq{margin-top:36px;border-top:1px solid var(--mist)}
+.faq details{border-bottom:1px solid var(--mist)}
+.faq summary{list-style:none;cursor:pointer;padding:22px 44px 22px 0;font-weight:600;font-size:19px;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:28px;font-weight:400;color:var(--slate);transition:transform .2s}
+.faq details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+.faq details p{padding:0 0 22px;max-width:70ch;color:#2B3038}
+
+/* final */
+.final{text-align:center}
+.final h2{max-width:16ch;margin:0 auto 18px}
+.final .actions{justify-content:center}
+footer{background:var(--ink);color:var(--fog);border-top:1px solid var(--ink-3);padding:36px 0 110px;font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px}
+footer a{color:var(--paper);text-decoration:none}
+@media(min-width:760px){footer{padding-bottom:36px}}
+
+/* sticky mobile CTA */
+.sticky{position:fixed;left:12px;right:12px;bottom:12px;z-index:60;display:none;box-shadow:0 12px 30px -10px rgba(0,0,0,.5)}
+@media(max-width:759px){.sticky{display:flex}}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}.msg{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mark" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#0E1116"/><path d="M7 26h9.5l4-11 5 19 4-12 2 4H36" fill="none" stroke="#C7F25A" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="40.5" cy="26" r="3" fill="#C7F25A"/></symbol>
+  <symbol id="wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></symbol>
+</svg>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Thrumline home"><svg><use href="#mark"/></svg>thrumline</a>
+    <nav aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn btn-lime" href="https://wa.me/918347055841?text=Hi%20Kanish%2C%20I%27d%20like%20to%20know%20more%20about%20Thrumline." data-wa>WhatsApp us</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero dark">
+  <div class="wrap">
+    <div>
+      <span class="chip"><span class="dot"></span>Taking 3 pilot clients in the Vapi–Valsad area</span>
+      <h1>Never leave a lead <span class="serif lime">on read.</span></h1>
+      <p class="lede">Thrumline answers every new enquiry on WhatsApp in under 60 seconds, day or night. It asks your questions and books the visit. Your team only talks to serious buyers.</p>
+      <div class="actions">
+        <a class="btn btn-lime" href="https://wa.me/918347055841?text=Hi%20Kanish%2C%20I%27d%20like%20a%20free%20Lead%20Leak%20Check%20for%20my%20business." data-wa><svg><use href="#wa"/></svg>Get a free Lead Leak Check</a>
+        <a class="btn btn-ghost" href="#how">See how it works</a>
+      </div>
+      <p class="hero-note">For real estate, clinics and other businesses where one customer is worth a lot.</p>
+    </div>
+
+    <div class="phone" aria-label="Example conversation">
+      <div class="phone-top"><span><b>Your business</b> · WhatsApp</span><span>10:02 PM</span></div>
+      <div class="chat">
+        <div class="msg lead">Hi, is a 2BHK still available? What's the price?<small>Lead from your Meta ad · 10:02 PM</small></div>
+        <div class="msg bot">Hi! Yes, 2BHK homes are available. I'll share the price sheet. So I send the right one: are you planning to buy in the next 3 months?<small><span class="timer">✓ replied in 38 s</span></small></div>
+        <div class="msg lead">Yes, within 2 months. Will need a home loan.<small>10:04 PM</small></div>
+        <div class="msg bot">Great. Would you like to see the sample flat? Open slots: Sat 11:00 · Sat 16:00 · Sun 11:00<small>10:04 PM</small></div>
+        <div class="msg lead">Sat 11<small>10:05 PM</small></div>
+        <div class="msg bot">Booked ✅ Saturday 11:00. Ravi from our sales team will call you tomorrow morning to confirm.<small>10:05 PM</small></div>
+        <div class="msg alert">⚡ Hot lead → Ravi: 2BHK · buying in 2 months · needs loan · visit Sat 11:00</div>
+      </div>
+      <p class="mock-label">Example conversation: 3 minutes, at 10 PM, with nobody on your team awake.</p>
+    </div>
+  </div>
+  <svg class="pulse-line" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70h520l30-50 40 90 34-60 18 20h798" fill="none" stroke="#C7F25A" stroke-width="2"/></svg>
+</section>
+
+<section id="leak">
+  <div class="wrap">
+    <p class="eyebrow moss">The leak</p>
+    <h2>You paid for the lead. <span class="serif">Then it waited.</span></h2>
+    <p class="lede muted">Ads, portals and listings cost money. What happens in the first few minutes after someone enquires decides whether that money turns into a visit, or into a sale for someone else.</p>
+    <div class="grid-3">
+      <div class="card"><div class="big ember">13 h</div><h3>The overnight gap</h3><p class="muted">An enquiry at 10 PM that gets a reply at 11 AM leaves the buyer 13 hours to call someone else, and your competitor's number is one tap away.</p></div>
+      <div class="card"><div class="big ember">"We'll get back"</div><h3>The auto-greeting trap</h3><p class="muted">An automatic "thanks, we'll contact you soon" feels like a reply to you. To the buyer it's a wait, with no answer and no next step.</p></div>
+      <div class="card"><div class="big ember">1 message</div><h3>No follow-up</h3><p class="muted">A lead who doesn't answer the first message gets forgotten. Nobody has time to chase every enquiry three times.</p></div>
+    </div>
+    <div class="research">
+      <div class="num">7×</div>
+      <div>
+        <p>A Harvard Business Review study of 2,241 US companies found that firms that tried to contact a web lead within an hour were nearly <b>7× as likely to qualify it</b> as firms that waited even an hour longer, and more than 60× as likely as firms that waited 24 hours or more.</p>
+        <cite>Oldroyd, McElheran &amp; Elkington, "The Short Life of Online Sales Leads", HBR, March 2011. A US study from 2011: treat it as a direction, not a forecast for your business.</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="dark">
+  <div class="wrap">
+    <p class="eyebrow lime">How it works</p>
+    <h2>Reply. Qualify. Book. <span class="serif lime">Hand over.</span></h2>
+    <p class="lede muted">We set it up on your WhatsApp Business number and run it for you. You approve everything it says.</p>
+    <div class="steps">
+      <div class="step"><h3>Reply in under 60 seconds</h3><p>Every new lead from your Meta ads, click-to-WhatsApp ads or website form gets a WhatsApp reply, at 10 AM or 2 AM.</p></div>
+      <div class="step"><h3>Ask your questions</h3><p>Budget, BHK, timeline, treatment, preferred date: whatever you need to know before a call. One question at a time, in the lead's language.</p></div>
+      <div class="step"><h3>Book the visit</h3><p>It offers your open slots for a site visit, consultation or call, and confirms the booking.</p></div>
+      <div class="step"><h3>Hand over to your team</h3><p>Your salesperson gets an alert with a summary and takes over. When the assistant isn't sure, it hands over instead of guessing.</p></div>
+    </div>
+    <div class="extras">
+      <div class="extra"><h3>Follow-ups that actually happen</h3><p>Leads who go quiet get a reminder on day 1, 3 and 7, using messages you approve. Then we stop.</p></div>
+      <div class="extra"><h3>A weekly report</h3><p>Leads, reply times, qualified leads, bookings, and how fast your team took over. Every Monday.</p></div>
+      <div class="extra"><h3>Your number, your data</h3><p>It runs on your own WhatsApp Business account. Meta bills its message charges to you directly. If you stop, we delete your data within 30 days.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="fit">
+  <div class="wrap">
+    <p class="eyebrow moss">Who it's for</p>
+    <h2>Built for businesses where <span class="serif">one customer is worth a lot.</span></h2>
+    <div class="fit">
+      <div class="card"><h3>A good fit</h3>
+        <ul>
+          <li>Real-estate developers and channel partners running Meta ads or portal listings</li>
+          <li>IVF, dental-implant, hair-transplant, skin and cosmetic clinics</li>
+          <li>Any business in the Vapi–Valsad–Silvassa–Daman area where enquiries arrive on WhatsApp, forms or ads, and one customer is typically worth ₹25,000 or more</li>
+        </ul>
+      </div>
+      <div class="card no"><h3>Probably not a fit (yet)</h3>
+        <ul>
+          <li>Fewer than about 50 enquiries a month. The system won't have enough to do.</li>
+          <li>Nobody on your side to take over hot leads. We book the visit; your team has to close it.</li>
+          <li>You're looking for a general chatbot that talks about anything. WhatsApp doesn't allow that, and it isn't what this is.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="calculator" style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow moss">Break-even</p>
+    <h2>How many extra customers <span class="serif">pays for it?</span></h2>
+    <p class="lede muted">No forecasts. Just the arithmetic of ₹7,999 a month against what one customer is worth to you.</p>
+    <div class="calc">
+      <div class="card">
+        <label for="value">What is one new customer worth to you?</label>
+        <div class="field"><span>₹</span><input id="value" inputmode="numeric" autocomplete="off" placeholder="type an amount" aria-describedby="value-hint"></div>
+        <p id="value-hint" class="muted" style="font-size:14px;margin-top:10px">Your profit or commission from one customer, not the sale price.</p>
+        <div class="presets" aria-label="Examples">
+          <button type="button" data-v="3000">e.g. ₹3,000 · a clinic patient</button>
+          <button type="button" data-v="50000">e.g. ₹50,000 · a broker's deal</button>
+        </div>
+      </div>
+      <div class="result" aria-live="polite">
+        <p class="muted">Thrumline pays for itself with</p>
+        <div class="out" id="out">–</div>
+        <p class="muted" id="out-note">Type a value to see the break-even.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" class="dark">
+  <div class="wrap">
+    <p class="eyebrow lime">Pricing</p>
+    <h2>Start with a 30-day pilot. <span class="serif lime">Keep it only if it works.</span></h2>
+    <div class="price-card">
+      <div>
+        <div class="price">₹9,999 <small>30-day pilot · setup included</small></div>
+        <p class="then">Then <b>₹7,999/month</b>. Cancel any month with 7 days' notice. Prices exclude GST if applicable.</p>
+        <p class="guarantee">Before we start, we agree one number, such as visits booked per 100 leads compared with last month. <b>If it doesn't move, you stop and owe nothing more.</b></p>
+        <div class="actions"><a class="btn btn-lime" href="https://wa.me/918347055841?text=Hi%20Kanish%2C%20I%27d%20like%20to%20discuss%20a%2030-day%20Thrumline%20pilot." data-wa><svg><use href="#wa"/></svg>Discuss a pilot on WhatsApp</a></div>
+      </div>
+      <ul class="checks">
+        <li>Setup on your WhatsApp Business number</li>
+        <li>Reply templates written and submitted to Meta for approval</li>
+        <li>Assistant trained only on facts you approve</li>
+        <li>Your qualifying questions and booking slots</li>
+        <li>Hot-lead alerts to your salesperson</li>
+        <li>Day 1 / 3 / 7 follow-ups</li>
+        <li>Weekly report + a 30-day review</li>
+        <li>WhatsApp's own message charges are billed by Meta to your account. We estimate them with you first.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="founder">
+  <div class="wrap founder">
+    <div class="avatar" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M3 26h13.5l4-11 5 19 4-12 2 4H38" fill="none" stroke="#C7F25A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="43" cy="26" r="2.6" fill="#C7F25A"/></svg></div>
+    <div>
+      <p class="eyebrow moss">Who you'll work with</p>
+      <h2 style="font-size:clamp(30px,4vw,44px)">Hi, I'm Kanish Shah.</h2>
+      <p class="lede muted">I run Thrumline from Vapi. I set up every system myself, I'll be the person you talk to, and I'll tell you straight if your team already replies fast enough and you don't need this. The quickest way to judge whether I practise what I sell is to message me.</p>
+      <div class="actions"><a class="btn btn-ink" href="https://wa.me/918347055841?text=Hi%20Kanish%2C%20testing%20how%20fast%20you%20reply%20%F0%9F%99%82" data-wa><svg><use href="#wa"/></svg>+91 83470 55841</a></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow moss">Questions</p>
+    <h2>Straight answers.</h2>
+    <div class="faq">
+      <details><summary>Is this a chatbot?</summary><p>It's an assistant that only knows what you approve: your projects or services, prices, timings, location and FAQs. It asks your qualifying questions and books visits. When it doesn't know something, it says so and hands over to your team. It won't make up answers or chat about unrelated topics.</p></details>
+      <details><summary>What if it says something wrong?</summary><p>It answers only from your approved facts sheet, never offers discounts or makes commitments you haven't approved, and hands over when it's unsure. You approve every message template before go-live, and we review a sample of real conversations every week and fix anything off.</p></details>
+      <details><summary>Is this allowed on WhatsApp?</summary><p>Yes, for this kind of assistant. Since 15 January 2026, Meta's WhatsApp Business rules ban general-purpose AI chatbots, but allow assistants that handle a business's own customer service, bookings and sales, which is exactly what this is. We also keep to WhatsApp's opt-in rules: your lead forms say people may be contacted on WhatsApp, and anyone who says stop is never messaged again.</p></details>
+      <details><summary>Do I need a new phone number?</summary><p>You need a number connected to the WhatsApp Business Platform. If your current number is on the WhatsApp Business app, we'll go through the options with you (moving it, or using a new number) before anything changes.</p></details>
+      <details><summary>Who owns the data?</summary><p>You do. The system runs on your own WhatsApp Business account, leads are logged to a sheet you can see, and we only use the data to run your system. If you stop, we give you an export on request and delete your data within 30 days.</p></details>
+      <details><summary>What will WhatsApp charge me?</summary><p>Meta charges per message for certain message types and bills your account directly. The amount depends on your lead volume, and we estimate it for your numbers before you start.</p></details>
+      <details><summary>Which languages?</summary><p>English, Hindi and Gujarati text. Before going live, we test with real examples of how your leads write.</p></details>
+      <details><summary>I already use Privyr, AiSensy or a CRM.</summary><p>If it works and your team replies fast, keep it. We'll tell you if you don't need us. In the pilot we log leads to a Google Sheet; if you use a CRM, we'll tell you honestly whether we can connect it.</p></details>
+      <details><summary>Is there a lock-in?</summary><p>No. It's a 30-day pilot, then month to month. Cancel any month with 7 days' notice.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="dark final">
+  <div class="wrap">
+    <h2>Your next lead arrives tonight. <span class="serif lime">Who's answering?</span></h2>
+    <p class="lede muted" style="margin:0 auto">Book a free 15-minute Lead Leak Check. We'll look at last month's enquiries with you and see how many got a reply within 5 minutes.</p>
+    <div class="actions"><a class="btn btn-lime" href="https://wa.me/918347055841?text=Hi%20Kanish%2C%20I%27d%20like%20a%20free%20Lead%20Leak%20Check%20for%20my%20business." data-wa><svg><use href="#wa"/></svg>Get a free Lead Leak Check</a></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Thrumline · Vapi, Gujarat</span>
+    <span><a href="https://wa.me/918347055841" data-wa>WhatsApp +91 83470 55841</a> · <a href="privacy.html">Privacy</a></span>
+  </div>
+</footer>
+
+<a class="btn btn-lime sticky" href="https://wa.me/918347055841?text=Hi%20Kanish%2C%20I%27d%20like%20a%20free%20Lead%20Leak%20Check%20for%20my%20business." data-wa><svg><use href="#wa"/></svg>Free Lead Leak Check</a>
+
+<script>
+(() => {
+  const FEE = 7999;
+  const input = document.getElementById('value');
+  const out = document.getElementById('out');
+  const note = document.getElementById('out-note');
+  const inr = n => Math.round(n).toLocaleString('en-IN');
+  function update() {
+    const v = Number(String(input.value).replace(/[^0-9]/g, ''));
+    if (!v) { out.textContent = '–'; note.textContent = 'Type a value to see the break-even.'; return; }
+    const perMonth = FEE / v;
+    if (perMonth >= 1) {
+      out.textContent = perMonth.toFixed(perMonth < 10 ? 1 : 0) + ' extra customers / month';
+      note.textContent = `₹7,999 ÷ ₹${inr(v)} per customer. If it brings fewer than that, it isn't worth it for you.`;
+    } else {
+      const months = 1 / perMonth;
+      out.textContent = '1 extra customer every ' + (months < 10 ? months.toFixed(1) : Math.round(months)) + ' months';
+      note.textContent = `₹7,999 ÷ ₹${inr(v)} = ${perMonth.toFixed(2)} customers a month.`;
+    }
+  }
+  input.addEventListener('input', () => {
+    const digits = input.value.replace(/[^0-9]/g, '').slice(0, 9);
+    input.value = digits ? Number(digits).toLocaleString('en-IN') : '';
+    update();
+  });
+  document.querySelectorAll('.presets button').forEach(b => b.addEventListener('click', () => {
+    input.value = Number(b.dataset.v).toLocaleString('en-IN'); update(); input.focus();
+  }));
+  // WhatsApp links open in a new tab on desktop; on phones they open the app.
+  document.querySelectorAll('[data-wa]').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
+})();
+</script>
+</body>
+</html>
