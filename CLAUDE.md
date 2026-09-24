@@ -45,7 +45,7 @@ tools/response-audit/          audit log → benchmarks, one-page reports, outre
 
 ```bash
 cd tools/response-audit
-python3 audit.py sample/audits.csv --as-of "2026-09-24 12:00"   # demo run → ./out
+python3 audit.py sample/audits.csv --as-of "2026-09-24 12:00" --allow-placeholders   # demo run → ./out
 python3 audit.py data/audits.csv --pdf                          # real run (data/ is gitignored)
 python3 -m unittest discover -s tests                           # must pass before committing
 ```

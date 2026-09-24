@@ -5,12 +5,12 @@ Turns a log of test enquiries (one row per business) into:
   - summary.md         internal benchmark by vertical + prioritised list
   - reports/<slug>.html one-page audit to send to each business (optional PDF)
   - outreach/<slug>.md  WhatsApp / email / walk-in copy built from their result
-  - pipeline.csv        a CRM-ready list, sorted by priority
+  - pipeline.csv        a CRM-ready list, sorted by priority (your edits are kept)
 
 Standard library only.
 
-    python3 audit.py sample/audits.csv
-    python3 audit.py data/audits.csv --config config.json --out out --pdf
+    python3 audit.py sample/audits.csv --allow-placeholders
+    python3 audit.py data/audits.csv --pdf
 """
 from __future__ import annotations
 
@@ -41,17 +41,17 @@ DATETIME_FORMATS = (
     "%d-%m-%Y %H:%M",
 )
 
-# Upper bound (minutes) for each bucket. Anything past the audit window is NO_REPLY.
-BUCKETS = (
-    ("≤ 5 min", 5),
+FAST = "≤ 5 min"
+# Upper bound (minutes) of each reply bucket; reply_buckets() adds a final one up to the audit window.
+FIXED_BUCKETS = (
+    (FAST, 5),
     ("5–60 min", 60),
     ("1–24 h", 24 * 60),
-    ("1–7 days", 7 * 24 * 60),
 )
 NO_REPLY = "no reply"
 
 FIELD_ALIASES = {
-    "business": ("business", "businessname", "name", "company"),
+    "business": ("business", "businessname", "company", "companyname"),
     "vertical": ("vertical", "industry", "category"),
     "area": ("area", "city", "locality"),
     "phone": ("phone", "contactphone", "whatsapp", "number"),
@@ -83,6 +83,8 @@ CHANNEL_NAMES = {
     "facebook_dm": "Facebook Messenger",
 }
 
+HONORIFICS = {"dr", "mr", "mrs", "ms", "miss", "shri", "smt", "prof", "adv", "er", "ca"}
+
 DEFAULT_CONFIG = {
     "agency": "Thrumline",
     "sender_name": "Your Name",
@@ -90,11 +92,22 @@ DEFAULT_CONFIG = {
     "sender_email": "",
     "website": "",
     "region": "your area",
-    "window_days": 7,
+    "window_days": 3,
     "followup_days": 3,
     "min_benchmark_n": 5,
     "timezone_label": "IST",
 }
+PLACEHOLDER_MARKERS = ("your name", "xxxxx", "yourdomain", "your city", "your area")
+
+PIPELINE_FIELDS = ["priority", "slug", "business", "vertical", "area", "contact_name", "phone", "result",
+                   "status", "last_contact", "next_action", "next_action_date", "notes"]
+# Columns you maintain by hand. A re-run keeps your values; only the tool's own defaults are refreshed.
+MANUAL_FIELDS = ("status", "last_contact", "next_action", "next_action_date", "notes")
+AUTO_VALUES = {
+    "status": {"new", "audit pending"},
+    "next_action": {"send audit result", "wait for audit window"},
+}
+FORMULA_PREFIXES = ("=", "+", "-", "@", "\t", "\r")
 
 
 @dataclass
@@ -116,6 +129,7 @@ class Audit:
     notes: str
     slug: str = ""
     status: str = ""  # "replied" | "no_reply" | "pending"
+    matured: bool = False  # the audit window has closed, so the result is final and can enter benchmarks
     minutes: float | None = None
     bucket: str = ""
     off_hours: bool = False
@@ -164,7 +178,10 @@ def slugify(text: str) -> str:
 
 
 def make_slug(business: str, area: str, phone: str) -> str:
-    token = hashlib.sha256(f"{business}|{area}|{phone}".encode()).hexdigest()[:5]
+    """Stable id; ignores case, spacing and phone formatting so re-typed duplicates collide."""
+    norm = lambda s: " ".join(s.lower().split())  # noqa: E731
+    key = f"{norm(business)}|{norm(area)}|{re.sub(r'[^0-9]', '', phone)}"
+    token = hashlib.sha256(key.encode()).hexdigest()[:5]
     return f"{slugify(business)}-{token}"
 
 
@@ -227,15 +244,29 @@ def norm_vertical(value: str) -> str:
 
 # ---------------------------------------------------------------- analysis
 
+def reply_buckets(window_days: int) -> tuple[tuple[str, int], ...]:
+    window = window_days * 24 * 60
+    buckets = [(label, upper) for label, upper in FIXED_BUCKETS if upper <= window]
+    if window > FIXED_BUCKETS[-1][1]:
+        buckets.append((f"1–{window_days} days", window))
+    return tuple(buckets)
+
+
+def bucket_labels(window_days: int) -> list[str]:
+    return [label for label, _ in reply_buckets(window_days)] + [NO_REPLY]
+
+
 def classify(audit: Audit, as_of: datetime, window_days: int) -> None:
     window = window_days * 24 * 60
     audit.off_hours = audit.enquiry_at.weekday() == 6 or not 10 <= audit.enquiry_at.hour < 18
     if audit.human_response_at:
         audit.minutes = (audit.human_response_at - audit.enquiry_at).total_seconds() / 60
+    elapsed = (as_of - audit.enquiry_at).total_seconds() / 60
+    audit.matured = elapsed >= window or (audit.minutes is not None and audit.minutes > window)
     if audit.minutes is not None and audit.minutes <= window:
         audit.status = "replied"
-        audit.bucket = next(label for label, upper in BUCKETS if audit.minutes <= upper)
-    elif audit.minutes is not None or (as_of - audit.enquiry_at).total_seconds() / 60 >= window:
+        audit.bucket = next(label for label, upper in reply_buckets(window_days) if audit.minutes <= upper)
+    elif audit.matured:
         audit.status = "no_reply"
         audit.bucket = NO_REPLY
     else:
@@ -257,18 +288,18 @@ def share_true(audits: list[Audit], attr: str) -> tuple[int, int]:
     return sum(1 for v in known if v), len(known)
 
 
-def vertical_stats(audits: list[Audit]) -> dict:
-    done = [a for a in audits if a.status != "pending"]
+def vertical_stats(audits: list[Audit], window_days: int) -> dict:
+    """Stats over matured audits only. Counting early replies before silent rows mature would flatter the vertical."""
+    done = [a for a in audits if a.matured]
     replied = [a for a in done if a.status == "replied"]
     minutes = [a.minutes for a in replied]
     followed_up = [a for a in replied if a.followups is not None]
     return {
         "n": len(done),
-        "pending": len(audits) - len(done),
+        "open": len(audits) - len(done),
         "replied": len(replied),
         "median": statistics.median(minutes) if minutes else None,
-        "fastest": min(minutes) if minutes else None,
-        "buckets": {label: sum(1 for a in done if a.bucket == label) for label, _ in BUCKETS + ((NO_REPLY, 0),)},
+        "buckets": {label: sum(1 for a in done if a.bucket == label) for label in bucket_labels(window_days)},
         "auto_reply": share_true(done, "auto_reply"),
         "asked_qualifying": share_true(replied, "asked_qualifying"),
         "tried_to_book": share_true(replied, "tried_to_book"),
@@ -278,9 +309,13 @@ def vertical_stats(audits: list[Audit]) -> dict:
     }
 
 
+def matured_others(audit: Audit, peers: list[Audit]) -> list[Audit]:
+    return [p for p in peers if p is not audit and p.matured]
+
+
 def faster_than_share(audit: Audit, peers: list[Audit]) -> tuple[int, int]:
-    """How many other completed peers were strictly slower than this business."""
-    others = [p for p in peers if p is not audit and p.status != "pending"]
+    """How many other matured peers were strictly slower than this business."""
+    others = matured_others(audit, peers)
     mine = rank_value(audit)
     return sum(1 for p in others if rank_value(p) > mine), len(others)
 
@@ -333,6 +368,15 @@ def channel_name(channel: str) -> str:
     return CHANNEL_NAMES.get(channel, channel.replace("_", " "))
 
 
+def greeting(contact_name: str) -> str:
+    parts = contact_name.split()
+    if not parts:
+        return "Hi"
+    if parts[0].rstrip(".").lower() in HONORIFICS and len(parts) > 1:
+        return f"Hi {parts[0]} {parts[-1]}"
+    return f"Hi {parts[0]}"
+
+
 def result_line(audit: Audit, window_days: int) -> str:
     if audit.status == "replied":
         return f"a person replied after {fmt_duration(audit.minutes)}"
@@ -343,11 +387,18 @@ def result_line(audit: Audit, window_days: int) -> str:
 
 def benchmark(audit: Audit, groups: dict[str, list[Audit]], cfg: dict) -> dict | None:
     peers = groups[audit.vertical]
-    stats = vertical_stats(peers)
+    stats = vertical_stats(peers, cfg["window_days"])
     if stats["n"] < cfg["min_benchmark_n"]:
         return None
-    slower, others = faster_than_share(audit, peers)
-    return {"stats": stats, "slower": slower, "others": others}
+    others = matured_others(audit, peers)
+    slower, _ = faster_than_share(audit, peers)
+    return {
+        "stats": stats,
+        "slower": slower,
+        "others": len(others),
+        "others_fast": sum(1 for p in others if p.bucket == FAST),
+        "others_no_reply": sum(1 for p in others if p.status == "no_reply"),
+    }
 
 
 # ---------------------------------------------------------------- outputs
@@ -381,13 +432,13 @@ def render_report(audit: Audit, bench: dict | None, cfg: dict, today: str) -> st
 
     if bench:
         s = bench["stats"]
-        within5 = s["buckets"]["≤ 5 min"]
         span = f"{s['first']:%d %b} – {s['last']:%d %b %Y}"
-        other_no_reply = s["buckets"][NO_REPLY] - 1
-        if audit.status == "replied":
+        if audit.status == "replied" and bench["slower"]:
             position = f"You were {faster_phrase(bench['slower'], bench['others'], plural)}."
-        elif other_no_reply:
-            position = f"{other_no_reply} of the other {bench['others']} {plural} we tested did not reply either."
+        elif audit.status == "replied":
+            position = f"The other {bench['others']} {plural} we tested all replied at least as fast."
+        elif bench["others_no_reply"]:
+            position = f"{bench['others_no_reply']} of the other {bench['others']} {plural} we tested did not reply either."
         else:
             position = f"Every other {singular} we tested replied."
         bench_html = f"""
@@ -395,7 +446,7 @@ def render_report(audit: Audit, bench: dict | None, cfg: dict, today: str) -> st
 <p class="muted">{s['n']} {e(plural)} tested the same way, {e(span)}.</p>
 <div class="stats">
   <div><b>{e(fmt_duration(s['median']))}</b><span>median time to a person's reply (among those who replied)</span></div>
-  <div><b>{pct(within5, s['n'])}</b><span>replied within 5 minutes</span></div>
+  <div><b>{pct(s['buckets'][FAST], s['n'])}</b><span>replied within 5 minutes</span></div>
   <div><b>{pct(s['buckets'][NO_REPLY], s['n'])}</b><span>did not reply within {window} days</span></div>
 </div>
 <p>{e(position)}</p>"""
@@ -421,13 +472,12 @@ def render_report(audit: Audit, bench: dict | None, cfg: dict, today: str) -> st
         rows=rows_html,
         benchmark=bench_html,
         contact=contact,
-        window=window,
     )
 
 
 def render_outreach(audit: Audit, bench: dict | None, cfg: dict) -> str:
     singular, plural = vertical_names(audit.vertical)
-    greet = f"Hi {audit.contact_name.split()[0]}" if audit.contact_name else "Hi"
+    greet = greeting(audit.contact_name)
     when = f"{audit.enquiry_at:%d %b} at {audit.enquiry_at:%H:%M}"
     via = channel_name(audit.channel)
     window = cfg["window_days"]
@@ -435,31 +485,33 @@ def render_outreach(audit: Audit, bench: dict | None, cfg: dict) -> str:
     n_tested = bench["stats"]["n"] if bench else None
     study = f"a response-time study of {n_tested} {plural} in {cfg['region']}" if n_tested else f"a response-time study of {plural} in {cfg['region']}"
 
+    # Only anonymised totals about other businesses: never one competitor's individual result.
     if audit.status == "replied" and audit.minutes <= 60:
         hook = f"your team replied in {fmt_duration(audit.minutes)}"
-        if bench:
+        if bench and bench["slower"]:
             hook += ", " + faster_phrase(bench["slower"], bench["others"], plural)
         ask = (
             "You're clearly doing something right, so I'd like to learn how you handle leads. "
-            "Would you give me 15 minutes this week? No pitch. I'll share the full local results in return."
+            "Would you give me 15 minutes this week? No pitch. I'll share the local results in return."
         )
     else:
         hook = result_line(audit, window)
         context = ""
         if bench:
+            if bench["others_fast"]:
+                hook += f". {bench['others_fast']} of the other {bench['others']} {plural} I tested replied within 5 minutes"
             stats = bench["stats"]
-            if stats["fastest"] is not None:
-                hook += f". The fastest {singular} I tested replied in {fmt_duration(stats['fastest'])}"
-            slow = stats["n"] - stats["buckets"]["≤ 5 min"]
+            slow = stats["n"] - stats["buckets"][FAST]
             if slow * 2 > stats["n"]:
                 context = f" {slow} of the {stats['n']} {plural} I tested took longer than 5 minutes."
+        page = "your result and the local comparison" if bench else "your result"
         ask = (
             f"I'm not saying this to criticise. It's one data point.{context} "
-            "I've put your result and the local comparison on one page. Can I send it over?"
+            f"I've put {page} on one page. Can I send it over?"
         )
 
     whatsapp = (
-        f"{greet}, I'm {me}. On {when} I sent an enquiry to {audit.business} on {via} as part of {study}. "
+        f"{greet}, I'm {me}. On {when} I sent an enquiry to {audit.business} via {via} as part of {study}. "
         f"Result: {hook}.\n\n{ask}"
     )
     email_subject = f"{audit.business}: your lead response result"
@@ -527,23 +579,27 @@ def render_outreach(audit: Audit, bench: dict | None, cfg: dict) -> str:
 
 
 def render_summary(audits: list[Audit], groups: dict[str, list[Audit]], cfg: dict, errors: list[str], as_of: datetime) -> str:
+    window = cfg["window_days"]
+    labels = bucket_labels(window)
     lines = [
         "# Lead Response Audit: summary (internal)",
         "",
-        f"Generated {as_of:%d %b %Y %H:%M}. Window: {cfg['window_days']} days. "
-        f"Benchmarks shown to prospects only when n ≥ {cfg['min_benchmark_n']}.",
+        f"Generated {as_of:%d %b %Y %H:%M}. Window: {window} days. Only audits whose window has closed are counted, "
+        f"so early replies can't flatter a vertical. Benchmarks are shown to prospects only when n ≥ {cfg['min_benchmark_n']}.",
         "",
         "These are your own measurements. Report them as measured; do not round them up into claims.",
         "",
     ]
-    header = "| Vertical | Tested | Pending | Median reply (repliers only) | ≤ 5 min | 5–60 min | 1–24 h | 1–7 days | No reply | Auto-greeting | Asked qualifying* | Offered booking* | Followed up* |"
+    header = ("| Vertical | Complete | Window open | Median reply (repliers only) | "
+              + " | ".join(labels)
+              + " | Auto-greeting | Asked qualifying* | Offered booking* | Followed up* |")
     lines += [header, "|" + "---|" * (header.count("|") - 1)]
     for vertical, peers in sorted(groups.items()):
-        s = vertical_stats(peers)
+        s = vertical_stats(peers, window)
         b = s["buckets"]
         lines.append(
-            f"| {vertical_names(vertical)[1]} | {s['n']} | {s['pending']} | {fmt_duration(s['median'])} | "
-            + " | ".join(f"{b[label]} ({pct(b[label], s['n'])})" for label in [l for l, _ in BUCKETS] + [NO_REPLY])
+            f"| {vertical_names(vertical)[1]} | {s['n']} | {s['open']} | {fmt_duration(s['median'])} | "
+            + " | ".join(f"{b[label]} ({pct(b[label], s['n'])})" for label in labels)
             + f" | {pct(*s['auto_reply'])} | {pct(*s['asked_qualifying'])} | {pct(*s['tried_to_book'])} | {pct(*s['followed_up'])} |"
         )
     lines += ["", "\\* share of businesses that replied, where recorded.", ""]
@@ -556,24 +612,51 @@ def render_summary(audits: list[Audit], groups: dict[str, list[Audit]], cfg: dic
     lines += ["## Pipeline by priority", "", "A = no reply or > 24 h · B = 1–24 h · C = ≤ 1 h (learn from them; weak prospects)", ""]
     lines += ["| Priority | Business | Vertical | Area | Result |", "|---|---|---|---|---|"]
     for a in sorted(audits, key=lambda a: (priority(a) == "-", priority(a), -rank_value(a), a.business)):
-        lines.append(f"| {priority(a)} | {a.business} | {vertical_names(a.vertical)[0]} | {a.area or '–'} | {result_line(a, cfg['window_days']) if a.status != 'pending' else 'pending'} |")
+        lines.append(f"| {priority(a)} | {a.business} | {vertical_names(a.vertical)[0]} | {a.area or '–'} | {result_line(a, window) if a.status != 'pending' else 'pending'} |")
     if errors:
         lines += ["", "## Rows skipped", ""] + [f"- {err}" for err in errors]
     return "\n".join(lines) + "\n"
 
 
+def sheet_safe(value: str) -> str:
+    """Stop spreadsheets from reading a cell as a formula (CSV injection; also keeps '+91 …' phones intact)."""
+    return "'" + value if value.startswith(FORMULA_PREFIXES) else value
+
+
+def sheet_unsafe(value: str) -> str:
+    return value[1:] if value.startswith("'") and value[1:].startswith(FORMULA_PREFIXES) else value
+
+
 def write_pipeline(path: Path, audits: list[Audit], cfg: dict) -> None:
+    """Rewrite pipeline.csv from the audit log, keeping the columns you edit by hand.
+
+    Rows whose business is no longer in the audit log are dropped (e.g. someone asked to be left out).
+    """
+    previous: dict[str, dict] = {}
+    if path.exists():
+        with path.open(newline="", encoding="utf-8-sig") as fh:
+            previous = {row["slug"]: row for row in csv.DictReader(fh) if row.get("slug")}
+
     with path.open("w", newline="", encoding="utf-8") as fh:
         writer = csv.writer(fh)
-        writer.writerow(["priority", "slug", "business", "vertical", "area", "contact_name", "phone", "result",
-                         "status", "last_contact", "next_action", "next_action_date", "notes"])
+        writer.writerow(PIPELINE_FIELDS)
         for a in sorted(audits, key=lambda a: (priority(a) == "-", priority(a), a.business)):
-            writer.writerow([
-                priority(a), a.slug, a.business, a.vertical, a.area, a.contact_name, a.phone,
-                result_line(a, cfg["window_days"]) if a.status != "pending" else "pending",
-                "new" if a.status != "pending" else "audit pending",
-                "", "send audit result" if a.status != "pending" else "wait for audit window", "", "",
-            ])
+            done = a.status != "pending"
+            row = {
+                "priority": priority(a), "slug": a.slug, "business": a.business, "vertical": a.vertical,
+                "area": a.area, "contact_name": a.contact_name, "phone": a.phone,
+                "result": result_line(a, cfg["window_days"]) if done else "pending",
+                "status": "new" if done else "audit pending",
+                "last_contact": "",
+                "next_action": "send audit result" if done else "wait for audit window",
+                "next_action_date": "", "notes": "",
+            }
+            kept = previous.get(a.slug, {})
+            for field in MANUAL_FIELDS:
+                old = sheet_unsafe((kept.get(field) or "").strip())
+                if old and old not in AUTO_VALUES.get(field, ()):
+                    row[field] = old
+            writer.writerow([sheet_safe(str(row[f])) for f in PIPELINE_FIELDS])
 
 
 def find_browser(explicit: str | None) -> str | None:
@@ -588,12 +671,47 @@ def find_browser(explicit: str | None) -> str | None:
 
 def export_pdf(browser: str, html_path: Path) -> bool:
     pdf_path = html_path.with_suffix(".pdf")
+    pdf_path.unlink(missing_ok=True)
     cmd = [browser, "--headless", "--disable-gpu", "--no-pdf-header-footer", "--print-to-pdf-no-header",
            f"--print-to-pdf={pdf_path}", html_path.resolve().as_uri()]
     if hasattr(os, "geteuid") and os.geteuid() == 0:
         cmd.insert(1, "--no-sandbox")
-    result = subprocess.run(cmd, capture_output=True, timeout=60)
+    try:
+        result = subprocess.run(cmd, capture_output=True, timeout=60)
+    except (subprocess.TimeoutExpired, OSError):
+        return False
     return result.returncode == 0 and pdf_path.exists()
+
+
+def clear_generated(out_dir: Path) -> None:
+    """Remove last run's reports/outreach so files for deleted rows can't be sent by mistake."""
+    for sub in ("reports", "outreach"):
+        folder = out_dir / sub
+        folder.mkdir(parents=True, exist_ok=True)
+        for f in folder.iterdir():
+            if f.is_file() and f.suffix in (".html", ".pdf", ".md"):
+                f.unlink()
+
+
+def warn_if_publishable(out_dir: Path) -> None:
+    """This repo is public: shout if the output folder would be picked up by `git add`."""
+    try:
+        inside = subprocess.run(["git", "-C", str(out_dir), "rev-parse", "--is-inside-work-tree"],
+                                capture_output=True, text=True, timeout=10)
+        if inside.stdout.strip() != "true":
+            return
+        ignored = subprocess.run(["git", "-C", str(out_dir), "check-ignore", "-q", "reports/probe.html"],
+                                 capture_output=True, timeout=10)
+    except (subprocess.TimeoutExpired, OSError):
+        return
+    if ignored.returncode != 0:
+        print(f"WARNING: {out_dir} is inside a git repository and NOT gitignored. It contains real business data; "
+              "do not commit it. Use the default output folder or add it to .gitignore.", file=sys.stderr)
+
+
+def placeholder_fields(cfg: dict) -> list[str]:
+    return [k for k in ("sender_name", "sender_phone", "sender_email", "region")
+            if any(m in str(cfg.get(k, "")).lower() for m in PLACEHOLDER_MARKERS)]
 
 
 def load_config(path: Path | None) -> dict:
@@ -604,6 +722,9 @@ def load_config(path: Path | None) -> dict:
             path = HERE / "config.example.json"
             print(f"note: no config.json, using {path.name}. Copy it to config.json and add your details.", file=sys.stderr)
     cfg.update(json.loads(path.read_text(encoding="utf-8")))
+    for key in ("window_days", "followup_days", "min_benchmark_n"):
+        if not isinstance(cfg[key], int) or cfg[key] < 1:
+            raise ValueError(f"config {key} must be a whole number ≥ 1, got {cfg[key]!r}")
     return cfg
 
 
@@ -615,8 +736,7 @@ def run(csv_path: Path, out_dir: Path, cfg: dict, as_of: datetime, pdf: bool = F
     for audit in audits:
         groups.setdefault(audit.vertical, []).append(audit)
 
-    (out_dir / "reports").mkdir(parents=True, exist_ok=True)
-    (out_dir / "outreach").mkdir(parents=True, exist_ok=True)
+    clear_generated(out_dir)
     today = f"{as_of:%d %b %Y}"
     browser_path = find_browser(browser) if pdf else None
     if pdf and not browser_path:
@@ -642,15 +762,28 @@ def run(csv_path: Path, out_dir: Path, cfg: dict, as_of: datetime, pdf: bool = F
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("csv", type=Path, help="audit log CSV (see sample/audits.csv)")
-    parser.add_argument("--out", type=Path, default=HERE / "out", help="output folder (default: ./out)")
+    parser.add_argument("--out", type=Path, default=HERE / "out", help="output folder (default: tools/response-audit/out)")
     parser.add_argument("--config", type=Path, help="config JSON (default: config.json, else config.example.json)")
     parser.add_argument("--as-of", help="treat this as 'now' (YYYY-MM-DD HH:MM); default: current time")
     parser.add_argument("--pdf", action="store_true", help="also export each report to PDF with headless Chrome")
     parser.add_argument("--browser", help="path to Chrome/Chromium for --pdf")
+    parser.add_argument("--allow-placeholders", action="store_true",
+                        help="run even though config still has placeholder contact details (demo only; never send the output)")
     args = parser.parse_args(argv)
 
-    cfg = load_config(args.config)
+    try:
+        cfg = load_config(args.config)
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    placeholders = placeholder_fields(cfg)
+    if placeholders and not args.allow_placeholders:
+        print(f"error: config still has placeholder values for {', '.join(placeholders)}. They would appear in every "
+              "report and message. Fill in config.json, or pass --allow-placeholders for a demo run.", file=sys.stderr)
+        return 2
     as_of = parse_datetime(args.as_of) if args.as_of else datetime.now().replace(second=0, microsecond=0)
+    args.out.mkdir(parents=True, exist_ok=True)
+    warn_if_publishable(args.out)
     result = run(args.csv, args.out, cfg, as_of, pdf=args.pdf, browser=args.browser)
     for err in result["errors"]:
         print(f"skipped {err}", file=sys.stderr)

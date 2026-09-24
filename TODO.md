@@ -18,9 +18,9 @@ Owner: **F** = founder, **C** = Claude (in a session). Update the status as you 
 |---|---|---|---|
 | 6 | Day 1: list 60 businesses actively paying for leads (20 real estate, 20 clinics, 20 coaching) | F | open |
 | 7 | Days 2–3: send the enquiries using the audit protocol (real name, no paid lead forms, Mon–Sat 10:00–18:00) | F | open |
-| 8 | Days 2–10: log replies; disclose within 3 days | F | open |
-| 9 | Day 5: run the audit tool; check the vertical gates | F (C can help interpret) | open |
-| 10 | Days 5–10: outreach A → B → C; walk-ins for A with no reply | F | open |
+| 8 | Days 2–6: log replies; disclose within 3 days | F | open |
+| 9 | Day 6: run the audit tool; check the vertical gates | F (C can help interpret) | open |
+| 10 | Days 6–10: outreach A → B → C; walk-ins for A with no reply | F | open |
 | 11 | Days 6–14: discovery conversations; propose the pilot; **collect payment** | F | open |
 | 12 | Day 14: review the gates and write the decision into `DECISIONS.md` | F + C | open |
 

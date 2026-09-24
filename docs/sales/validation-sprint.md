@@ -8,7 +8,7 @@
 
 | Checkpoint | Result | Action |
 |---|---|---|
-| After the audit (day 5) | ≥ 70% of a vertical replied within 5 min | The problem is absent there. Drop that vertical. |
+| After the audit (day 6) | ≥ 70% of a vertical replied within 5 min | The problem is absent there. Drop that vertical. |
 | After the audit | All three verticals drop | Kill the thesis. Log it in `DECISIONS.md` with the data. |
 | After 30 outreach touches | < 5 conversations booked | The message or channel is wrong. Switch to walk-ins and warm intros before changing the offer. |
 | After 30 conversations | 0 paid pilots | A value or price problem. Re-read the interview notes, then change one thing. |
@@ -21,11 +21,11 @@ A verbal "yes, interested" is not a pilot. **Only money received counts.**
 | Day | Do | Output |
 |---|---|---|
 | 1 | Build the list: 60 businesses (20 per vertical) that are actively paying for leads | `tools/response-audit/data/audits.csv` rows (business, vertical, area, phone, source) |
-| 2–3 | Send enquiries (protocol below), about 20 a day, Mon–Sat 10:00–18:00 | `channel` and `enquiry_at` filled in |
-| 2–10 | Record replies as they arrive; stay quiet for up to 3 days to count follow-ups, then disclose | `human_response_at`, `auto_reply`, `asked_qualifying`, `tried_to_book`, `followups` |
-| 5 | Run `python3 audit.py data/audits.csv --pdf` on the completed rows; check the vertical gates | `summary.md`, reports, outreach |
-| 5–10 | Outreach in priority order A → B; C gets the "learn from you" ask | Conversations booked |
-| 6–14 | Discovery conversations (script below); propose the pilot the same day when it fits | Notes in `pipeline.csv`; payments |
+| 2–3 | Send enquiries (protocol below), about 30 a day, Mon–Sat 10:00–18:00 | `channel` and `enquiry_at` filled in |
+| 2–6 | Record replies as they arrive; stay quiet for up to 3 days to count follow-ups, then disclose | `human_response_at`, `auto_reply`, `asked_qualifying`, `tried_to_book`, `followups` |
+| 6 | The 3-day audit windows have closed. Run `python3 audit.py data/audits.csv --pdf` and check the vertical gates. The numbers only count closed windows, so running earlier just shows fewer rows, not rosier ones. | `summary.md`, reports, outreach |
+| 6–10 | Outreach in priority order A → B; C gets the "learn from you" ask | Conversations booked |
+| 7–14 | Discovery conversations (script below); propose the pilot the same day when it fits | Notes in `pipeline.csv`; payments |
 | 10–12 | Walk-ins with printed reports for A-priority businesses that haven't replied | Conversations |
 | 14 | Review against the gates. Write the decision into `DECISIONS.md`. | GO / change one thing / kill |
 
